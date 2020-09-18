@@ -1,0 +1,12 @@
+
+type Query {
+    getGroupByName(name: String): Group
+}
+
+type Group {
+    _id: ID!
+    name: String
+    faculty: String
+    course: Int
+    courseTitle: String
+}
