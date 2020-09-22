@@ -2,7 +2,6 @@ const saveScheduleByGroup = require('./services/scheduleParser');
 const api = require("./api/v1");
 
 const Group = require("./models/Group");
-
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
