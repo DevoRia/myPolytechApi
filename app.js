@@ -8,7 +8,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const http = require('http');
 require('./services/mongoose')
-const {migrateSchedule} = require("./services/firebaseMigrator");
 const app = express();
 
 app.use(logger('dev'));
@@ -27,8 +26,6 @@ const server = http.createServer(app);
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
-
-migrateSchedule()
 
 async function parse() {
   const groups = await Group.find({})
