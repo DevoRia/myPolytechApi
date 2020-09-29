@@ -13,6 +13,7 @@ var parser = new DomParser();
 
 const saveScheduleByGroup = async (group) => {
   const {data} = await axios.get(`https://rozklad.ztu.edu.ua/schedule/group/${encodeURIComponent(group.name)}`)
+  // const data = await new Promise(resolve => fs.readFile('./public/subgroups.html', 'utf8', (err, data) => resolve(data)));
   console.log(` --- ${group.name} --- PROCESSING...`)
   const table = getTagElem('table', data);
   for (let i = 0; i < table.length; i++) { // Schedule
