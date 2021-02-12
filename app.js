@@ -1,4 +1,5 @@
 const saveScheduleByGroup = require('./services/scheduleParser');
+const saveGroups = require('./services/groupParser');
 const api = require("./api/v1");
 
 const Group = require("./models/Group");
@@ -28,23 +29,29 @@ server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-migrateSchedule()
+// migrateSchedule()
 
-async function parse() {
+async function parseGroups() {
+  await saveGroups();
+}
+
+async function parseSchedule() {
   const groups = await Group.find({})
-  let index = 58
+  let index = 0
   const interval = setInterval(async () => {
     const groupName = groups[index].name;
-    console.log(` --- ${groupName} --- STARTED`)
+    console.log(` --- ${groupName} --- STARTED ${index}`)
     await saveScheduleByGroup(groups[index])
     console.log(` --- ${groupName} --- FINISHED`)
     index++;
   }, 30000);
 }
 
-//
-// parse()
-//   .then(() => console.log('START'))
-//   .catch(err => console.log('ERROR!!!!!', err))
+parseGroups()
+  .then(
+    () => parseSchedule()
+      .then(() => console.log('START'))
+      .catch(err => console.log('ERROR!!!!!', err))
+  )
 
 module.exports = app
