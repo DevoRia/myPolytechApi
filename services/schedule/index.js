@@ -6,8 +6,8 @@ const getScheduleByGroup = async (name) => {
   try {
     const groupId = (await Group.findOne({name}))._id;
     const scheduleRaw = await DaySchedule.find({ group: groupId }).select('day dayNumber firstLesson secondLesson thirdLesson forthLesson fifthLesson sixthLesson')
-    const week1 = (await Promise.all((await scheduleRaw.filter(day => day.day.endsWith('1'))).map(populateLessons))).sort((a, b) => a.index > b.index)
-    const week2 = (await Promise.all(await (await scheduleRaw.filter(day => day.day.endsWith('2'))).map(populateLessons))).sort((a, b) => a.index > b.index)
+    const week1 = (await Promise.all((await scheduleRaw.filter(day => day.day.endsWith('1'))).map(populateLessons))).sort(sort)
+    const week2 = (await Promise.all(await (await scheduleRaw.filter(day => day.day.endsWith('2'))).map(populateLessons))).sort(sort)
     return [ ...week1, ...week2]
   } catch (e) {
     throw new Error(e.message)
@@ -15,6 +15,12 @@ const getScheduleByGroup = async (name) => {
 }
 
 module.exports = getScheduleByGroup;
+
+function sort( a , b){
+  if(a.index > b.index) return 1;
+  if(a.index < b.index) return -1;
+  return 0;
+}
 
 async function populateLessons(day) {
   const firstLesson = await Promise.all(day.firstLesson.map(mapSubject))

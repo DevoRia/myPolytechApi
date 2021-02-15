@@ -41,7 +41,11 @@ async function parseSchedule() {
   const interval = setInterval(async () => {
     const groupName = groups[index].name;
     console.log(` --- ${groupName} --- STARTED ${index}`)
-    await saveScheduleByGroup(groups[index])
+    try {
+      await saveScheduleByGroup(groups[index])
+    } catch (e) {
+      clearInterval(interval);
+    }
     console.log(` --- ${groupName} --- FINISHED`)
     index++;
   }, 30000);

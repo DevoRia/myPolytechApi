@@ -39,6 +39,7 @@ exports.migrateSchedule = async () => {
   for (let i = 0; i < groups.length; i++) {
     const group = groups[i];
     const schedule = await getScheduleByGroup(group.name)
+    console.log(group.name);
     let scheduleMapped = schedule.map(day => {
        day.firstLesson = arrayToObject(day.firstLesson)
        day.secondLesson = arrayToObject(day.secondLesson)
